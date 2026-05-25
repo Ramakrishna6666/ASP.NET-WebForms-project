@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  films-app:
+    image: films-app:latest
+    container_name: films-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      # ASP.NET Core Environment
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      
+      # Application Configuration
+      - DataFilePath=/app/data/files
+      - LogFilePath=/app/logs
+      - TempFilePath=/app/temp
+      
+      # Database Connection (override with actual values)
+      - ConnectionStrings__DefaultConnection=Server=${DB_SERVER:-localhost};Database=${DB_NAME:-films};User Id=${DB_USER:-sa};Password=${DB_PASSWORD:-YourPassword123};TrustServerCertificate=True;
+      - ConnectionStrings__filmsConnectionString=Server=${DB_SERVER:-localhost};Database=${DB_NAME:-films};User Id=${DB_USER:-sa};Password=${DB_PASSWORD:-YourPassword123};MultipleActiveResultSets=True;TrustServerCertificate=True;
+      
+      # .NET Runtime Configuration
+      - DOTNET_RUNNING_IN_CONTAINER=true
+      - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+      - TZ=UTC
+    volumes:
+      # Persistent data volumes
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./temp:/app/temp
+    networks:
+      - films-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/HealthCheck.aspx || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+networks:
+  films-network:
+    driver: bridge
+
+volumes:
+  films-data:
+  films-logs:
+  films-temp:
