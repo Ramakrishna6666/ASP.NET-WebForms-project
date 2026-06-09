@@ -1,0 +1,54 @@
+@page
+@model Films.Web.Pages.Films.IndexModel
+@{
+    ViewData["Title"] = "Films";
+}
+
+<div class="container">
+    <h1>Films</h1>
+    
+    <div class="row mb-3">
+        <div class="col">
+            <a asp-page="Create" class="btn btn-primary">Create New Film</a>
+        </div>
+        <div class="col">
+            <form method="get" class="form-inline float-end">
+                <input type="text" name="searchTerm" class="form-control mr-2" placeholder="Search films..." value="@Model.SearchTerm" />
+                <button type="submit" class="btn btn-secondary">Search</button>
+            </form>
+        </div>
+    </div>
+
+    @if (Model.Films != null && Model.Films.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Year</th>
+                    <th>Genre</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var film in Model.Films)
+                {
+                    <tr>
+                        <td>@film.Title</td>
+                        <td>@film.Year</td>
+                        <td>@film.Genre</td>
+                        <td>
+                            <a asp-page="Details" asp-route-id="@film.Id" class="btn btn-sm btn-info">Details</a>
+                            <a asp-page="Edit" asp-route-id="@film.Id" class="btn btn-sm btn-warning">Edit</a>
+                            <a asp-page="Delete" asp-route-id="@film.Id" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info">No films found.</div>
+    }
+</div>

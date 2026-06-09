@@ -1,0 +1,40 @@
+@page
+@model Films.Web.Pages.IndexModel
+@{
+    ViewData["Title"] = "Home - Films Application";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Films Application</h1>
+    <p class="lead">Manage your film collection with ease</p>
+    
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Films</h5>
+                    <p class="card-text">Browse and manage your film collection</p>
+                    <a href="/Films/Index" class="btn btn-primary">View Films</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Actors</h5>
+                    <p class="card-text">Manage actors and their information</p>
+                    <a href="/Actors/Index" class="btn btn-primary">View Actors</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Directors</h5>
+                    <p class="card-text">Manage directors and their filmography</p>
+                    <a href="/Directors/Index" class="btn btn-primary">View Directors</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
