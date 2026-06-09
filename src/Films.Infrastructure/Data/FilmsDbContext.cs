@@ -130,12 +130,18 @@ public class FilmsDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name).IsRequired().HasMaxLength(100).HasColumnName("name");
             entity.Property(e => e.Description).HasMaxLength(500).HasColumnName("description");
-            entity.Property(e => e.GrantedDate).HasColumnName("granted_date").HasColumnType("timestamp without time zone");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date").HasColumnType("timestamp without time zone");
+        });
+
+        // UserRight configuration
+        modelBuilder.Entity<UserRight>(entity =>
+        {
             entity.ToTable("user_rights");
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.UserId).HasColumnName("user_id");
             entity.Property(e => e.RightId).HasColumnName("right_id");
+            entity.Property(e => e.GrantedDate).HasColumnName("granted_date").HasColumnType("timestamp without time zone");
             entity.Property(e => e.CreatedDate).HasColumnName("created_date").HasColumnType("timestamp without time zone");
             entity.HasOne(e => e.User)
                 .WithMany(u => u.UserRights)
