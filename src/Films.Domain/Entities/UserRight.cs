@@ -9,6 +9,7 @@ public class UserRight
     public int UserId { get; set; }
     public int RightId { get; set; }
     public DateTime GrantedDate { get; set; }
+    public DateTime CreatedDate { get; set; }
 
     // Navigation properties
     public virtual User User { get; set; } = null!;

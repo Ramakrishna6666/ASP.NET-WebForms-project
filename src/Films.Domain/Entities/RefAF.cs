@@ -9,6 +9,7 @@ public class RefAF
     public int ActorId { get; set; }
     public int FilmId { get; set; }
     public string? Role { get; set; }
+    public DateTime CreatedDate { get; set; }
 
     // Navigation properties
     public virtual Actor Actor { get; set; } = null!;

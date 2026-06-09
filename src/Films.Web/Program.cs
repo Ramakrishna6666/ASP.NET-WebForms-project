@@ -21,9 +21,26 @@ builder.Host.UseSerilog();
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 
-// Configure DbContext
+// Configure DbContext for PostgreSQL
 builder.Services.AddDbContext<FilmsDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        npgsqlOptions =>
+        {
+            npgsqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorCodesToAdd: null);
+            npgsqlOptions.MigrationsHistoryTable("__ef_migrations_history", "public");
+        })
+        .UseSnakeCaseNamingConvention()
+        .EnableSensitiveDataLogging(builder.Environment.IsDevelopment())
+        .EnableDetailedErrors(builder.Environment.IsDevelopment());
+    
+    // Enable legacy timestamp behavior for PostgreSQL
+    AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+});
 
 // Register repositories and unit of work
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

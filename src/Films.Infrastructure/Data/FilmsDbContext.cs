@@ -27,23 +27,35 @@ public class FilmsDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        // Set default schema to public for PostgreSQL
+        modelBuilder.HasDefaultSchema("public");
+
         // Film configuration
         modelBuilder.Entity<Film>(entity =>
         {
-            entity.ToTable("Films");
+            entity.ToTable("films");
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Title).IsRequired().HasMaxLength(200);
-            entity.Property(e => e.Description).HasMaxLength(1000);
-            entity.Property(e => e.Genre).HasMaxLength(100);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Title).IsRequired().HasMaxLength(200).HasColumnName("title");
+            entity.Property(e => e.Description).HasMaxLength(1000).HasColumnName("description");
+            entity.Property(e => e.Genre).HasMaxLength(100).HasColumnName("genre");
+            entity.Property(e => e.Year).HasColumnName("year");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date").HasColumnType("timestamp without time zone");
+            entity.Property(e => e.ModifiedDate).HasColumnName("modified_date").HasColumnType("timestamp without time zone");
         });
 
         // Actor configuration
         modelBuilder.Entity<Actor>(entity =>
         {
-            entity.ToTable("Actors");
+            entity.ToTable("actors");
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.FirstName).IsRequired().HasMaxLength(100);
-            entity.Property(e => e.LastName).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.FirstName).IsRequired().HasMaxLength(100).HasColumnName("first_name");
+            entity.Property(e => e.LastName).IsRequired().HasMaxLength(100).HasColumnName("last_name");
+            entity.Property(e => e.BirthDate).HasColumnName("birth_date").HasColumnType("timestamp without time zone");
+            entity.Property(e => e.SexId).HasColumnName("sex_id");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date").HasColumnType("timestamp without time zone");
+            entity.Property(e => e.ModifiedDate).HasColumnName("modified_date").HasColumnType("timestamp without time zone");
             entity.HasOne(e => e.Sex)
                 .WithMany(s => s.Actors)
                 .HasForeignKey(e => e.SexId)
@@ -53,10 +65,15 @@ public class FilmsDbContext : DbContext
         // Director configuration
         modelBuilder.Entity<Director>(entity =>
         {
-            entity.ToTable("Directors");
+            entity.ToTable("directors");
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.FirstName).IsRequired().HasMaxLength(100);
-            entity.Property(e => e.LastName).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.FirstName).IsRequired().HasMaxLength(100).HasColumnName("first_name");
+            entity.Property(e => e.LastName).IsRequired().HasMaxLength(100).HasColumnName("last_name");
+            entity.Property(e => e.BirthDate).HasColumnName("birth_date").HasColumnType("timestamp without time zone");
+            entity.Property(e => e.SexId).HasColumnName("sex_id");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date").HasColumnType("timestamp without time zone");
+            entity.Property(e => e.ModifiedDate).HasColumnName("modified_date").HasColumnType("timestamp without time zone");
             entity.HasOne(e => e.Sex)
                 .WithMany(s => s.Directors)
                 .HasForeignKey(e => e.SexId)
@@ -66,13 +83,18 @@ public class FilmsDbContext : DbContext
         // User configuration
         modelBuilder.Entity<User>(entity =>
         {
-            entity.ToTable("Users");
+            entity.ToTable("users");
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Username).IsRequired().HasMaxLength(100);
-            entity.Property(e => e.Email).IsRequired().HasMaxLength(200);
-            entity.Property(e => e.PasswordHash).IsRequired();
-            entity.Property(e => e.FirstName).IsRequired().HasMaxLength(100);
-            entity.Property(e => e.LastName).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Username).IsRequired().HasMaxLength(100).HasColumnName("username");
+            entity.Property(e => e.Email).IsRequired().HasMaxLength(200).HasColumnName("email");
+            entity.Property(e => e.PasswordHash).IsRequired().HasColumnName("password_hash");
+            entity.Property(e => e.FirstName).IsRequired().HasMaxLength(100).HasColumnName("first_name");
+            entity.Property(e => e.LastName).IsRequired().HasMaxLength(100).HasColumnName("last_name");
+            entity.Property(e => e.TypeUserId).HasColumnName("type_user_id");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date").HasColumnType("timestamp without time zone");
+            entity.Property(e => e.ModifiedDate).HasColumnName("modified_date").HasColumnType("timestamp without time zone");
+            entity.Property(e => e.IsActive).HasColumnName("is_active");
             entity.HasOne(e => e.TypeUser)
                 .WithMany(t => t.Users)
                 .HasForeignKey(e => e.TypeUserId)
@@ -82,34 +104,39 @@ public class FilmsDbContext : DbContext
         // Sex configuration
         modelBuilder.Entity<Sex>(entity =>
         {
-            entity.ToTable("Sex");
+            entity.ToTable("sex");
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Name).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(50).HasColumnName("name");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date").HasColumnType("timestamp without time zone");
         });
 
         // TypeUser configuration
         modelBuilder.Entity<TypeUser>(entity =>
         {
-            entity.ToTable("TypeUsers");
+            entity.ToTable("type_users");
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
-            entity.Property(e => e.Description).HasMaxLength(500);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(100).HasColumnName("name");
+            entity.Property(e => e.Description).HasMaxLength(500).HasColumnName("description");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date").HasColumnType("timestamp without time zone");
         });
 
         // Right configuration
         modelBuilder.Entity<Right>(entity =>
         {
-            entity.ToTable("Rights");
+            entity.ToTable("rights");
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
-            entity.Property(e => e.Description).HasMaxLength(500);
-        });
-
-        // UserRight configuration
-        modelBuilder.Entity<UserRight>(entity =>
-        {
-            entity.ToTable("UserRights");
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(100).HasColumnName("name");
+            entity.Property(e => e.Description).HasMaxLength(500).HasColumnName("description");
+            entity.Property(e => e.GrantedDate).HasColumnName("granted_date").HasColumnType("timestamp without time zone");
+            entity.ToTable("user_rights");
             entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.RightId).HasColumnName("right_id");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date").HasColumnType("timestamp without time zone");
             entity.HasOne(e => e.User)
                 .WithMany(u => u.UserRights)
                 .HasForeignKey(e => e.UserId)
@@ -123,9 +150,13 @@ public class FilmsDbContext : DbContext
         // RefAF configuration (Actor-Film relationship)
         modelBuilder.Entity<RefAF>(entity =>
         {
-            entity.ToTable("RefAF");
+            entity.ToTable("ref_af");
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Role).HasMaxLength(200);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.ActorId).HasColumnName("actor_id");
+            entity.Property(e => e.FilmId).HasColumnName("film_id");
+            entity.Property(e => e.Role).HasMaxLength(200).HasColumnName("role");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date").HasColumnType("timestamp without time zone");
             entity.HasOne(e => e.Actor)
                 .WithMany(a => a.ActorFilms)
                 .HasForeignKey(e => e.ActorId)
@@ -139,8 +170,12 @@ public class FilmsDbContext : DbContext
         // RefDAF configuration (Director-Film relationship)
         modelBuilder.Entity<RefDAF>(entity =>
         {
-            entity.ToTable("RefDAF");
+            entity.ToTable("ref_daf");
             entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.DirectorId).HasColumnName("director_id");
+            entity.Property(e => e.FilmId).HasColumnName("film_id");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date").HasColumnType("timestamp without time zone");
             entity.HasOne(e => e.Director)
                 .WithMany(d => d.DirectorFilms)
                 .HasForeignKey(e => e.DirectorId)

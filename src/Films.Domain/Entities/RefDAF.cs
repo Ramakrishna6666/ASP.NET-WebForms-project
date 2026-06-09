@@ -8,6 +8,7 @@ public class RefDAF
     public int Id { get; set; }
     public int DirectorId { get; set; }
     public int FilmId { get; set; }
+    public DateTime CreatedDate { get; set; }
 
     // Navigation properties
     public virtual Director Director { get; set; } = null!;
