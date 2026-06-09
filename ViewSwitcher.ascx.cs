@@ -9,6 +9,12 @@ using Microsoft.AspNet.FriendlyUrls.Resolvers;
 
 namespace FIlms
 {
+    /// <summary>
+    /// View Switcher User Control - Web Forms
+    /// Cloud Migration Note: This Web Forms user control should be migrated to ASP.NET Core View Components
+    /// for optimal cloud deployment on Azure Container Apps with Linux containers.
+    /// ASP.NET Core provides responsive design patterns without view switching.
+    /// </summary>
     public partial class ViewSwitcher : System.Web.UI.UserControl
     {
         protected string CurrentView { get; private set; }

@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
@@ -10,8 +11,11 @@ namespace FIlms
 {
     public partial class SiteMaster : MasterPage
     {
-        private const string AntiXsrfTokenKey = "__AntiXsrfToken";
-        private const string AntiXsrfUserNameKey = "__AntiXsrfUserName";
+        // Cloud-ready: Externalize secrets to Azure Key Vault
+        // These should be retrieved from Azure Key Vault using Managed Identity
+        // Example: Use Azure.Security.KeyVault.Secrets with DefaultAzureCredential
+        private string AntiXsrfTokenKey => ConfigurationManager.AppSettings["AntiXsrfTokenKey"] ?? "__AntiXsrfToken";
+        private string AntiXsrfUserNameKey => ConfigurationManager.AppSettings["AntiXsrfUserNameKey"] ?? "__AntiXsrfUserName";
         private string _antiXsrfTokenValue;
 
         protected void Page_Init(object sender, EventArgs e)
