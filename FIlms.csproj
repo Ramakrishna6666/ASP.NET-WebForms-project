@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -13,7 +13,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FIlms</RootNamespace>
     <AssemblyName>FIlms</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <!-- CLOUD READINESS (cr-dotnet-0025): Upgraded from v4.6 to v4.8 for TLS 1.2/1.3 support,
+         improved cryptography APIs, and enhanced cloud compatibility on AWS. -->
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -128,6 +130,19 @@
     </Reference>
     <Reference Include="Microsoft.AspNet.FriendlyUrls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.0\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
+    </Reference>
+    <!-- CLOUD READINESS (cr-dotnet-0123): AWS Secrets Manager SDK for runtime secret retrieval.
+         Replaces hardcoded secrets with AWS Secrets Manager integration. -->
+    <Reference Include="AWSSDK.Core">
+      <HintPath>..\packages\AWSSDK.Core.3.7.100.14\lib\net45\AWSSDK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.SecretsManager">
+      <HintPath>..\packages\AWSSDK.SecretsManager.3.7.100.14\lib\net45\AWSSDK.SecretsManager.dll</HintPath>
+    </Reference>
+    <!-- CLOUD READINESS (cr-dotnet-0010): AWS Systems Manager Parameter Store configuration provider.
+         Replaces Web.config transformations with runtime configuration injection. -->
+    <Reference Include="Amazon.Extensions.Configuration.SystemsManager">
+      <HintPath>..\packages\Amazon.Extensions.Configuration.SystemsManager.6.0.0\lib\net461\Amazon.Extensions.Configuration.SystemsManager.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

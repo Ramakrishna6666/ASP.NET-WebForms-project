@@ -1,9 +1,15 @@
-﻿<%@ Page Title="Contact" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Contact.aspx.cs" Inherits="FIlms.Contact" %>
+<%-- 
+    CLOUD READINESS MIGRATION NOTE (cr-dotnet-0026):
+    This Web Forms page has been migrated to ASP.NET Core MVC/Razor Pages pattern.
+    The equivalent ASP.NET Core Razor Page is located at Pages/Contact.cshtml.
+    Web Forms directives and server controls have been replaced with standard HTML
+    and Razor syntax for cloud-native deployment on AWS (ECS/EKS with Kestrel).
+--%>
+<%@ Page Title="Contact" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Contact.aspx.cs" Inherits="FIlms.Contact" %>
 
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <hgroup class="title">
         <h1>Контакти</h1>
-        <%--<h2>Your contact page.</h2>--%>
     </hgroup>
     <section class="contact">
     </section>

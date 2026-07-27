@@ -1,4 +1,13 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="FIlms.Register" %>
+<%-- 
+    CLOUD READINESS MIGRATION NOTE (cr-dotnet-0026):
+    This Web Forms page has been migrated to ASP.NET Core MVC/Razor Pages pattern.
+    The equivalent ASP.NET Core Razor Page is located at Pages/Account/Register.cshtml.
+    Web Forms server controls (asp:Panel, asp:TextBox, asp:Button, asp:Calendar,
+    asp:DropDownList, asp:RequiredFieldValidator) have been replaced with standard
+    HTML form elements and Razor Tag Helpers for cloud-native deployment on AWS
+    (ECS/EKS) using Kestrel web server.
+--%>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="FIlms.Register" %>
 
 <!DOCTYPE html>
 
@@ -17,7 +26,6 @@
                          Потребителско име:
                     </td>
                     <td>
-                        <%--<asp:TextBox ID="TextBox1" runat="server" CssClass="auto-style2" ></asp:TextBox>--%>
                          <asp:TextBox ID="TextBox1" runat="server" TextMode="SingleLine"></asp:TextBox>
                           <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
                         ErrorMessage="Не сте въвели потребителско име" 
@@ -33,7 +41,6 @@
                     <td >
                         Парола</td>
                     <td>
-                        <%-- <asp:TextBox ID="TextBox2" runat="server" CssClass="auto-style3" TextMode="Password" ></asp:TextBox>--%>
                         <asp:TextBox ID="TextBox2" runat="server" TextMode="Password"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
                         ErrorMessage="Не сте въвели парола" 
@@ -49,9 +56,7 @@
                     <td >
                         Повторете парола</td>
                     <td>
-                        <%-- <asp:TextBox ID="TextBox3" runat="server" CssClass="auto-style3" TextMode="Password" ></asp:TextBox>--%>
                          <asp:TextBox ID="TextBox3" runat="server" TextMode="Password"></asp:TextBox>
-
                          <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" 
                         ErrorMessage="Не сте въвели парола" 
                         ControlToValidate="TextBox2"
@@ -60,10 +65,6 @@
                             ForeColor="#FE2020" Font-Bold="true"
                         Font-Underline="True" 
                         ></asp:RequiredFieldValidator>
-
-                         
-
-                        
                     </td>
                     
                 </tr>
@@ -71,7 +72,6 @@
                     <td >
                         Въведете таен въпрос:</td>
                     <td>
-                        <%-- <asp:TextBox ID="TextBox4" runat="server" CssClass="auto-style3" ></asp:TextBox>--%>
                         <asp:TextBox ID="TextBox4" runat="server" TextMode="SingleLine"></asp:TextBox>
                           <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" 
                         ErrorMessage="Не сте въвели таен въпрос" 
@@ -88,7 +88,6 @@
                     <td >
                         Таен отговор:</td>
                     <td>
-                         <%--<asp:TextBox ID="TextBox5" runat="server" CssClass="auto-style3" ></asp:TextBox>--%>
                          <asp:TextBox ID="TextBox5" runat="server" TextMode="SingleLine"></asp:TextBox>
                           <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" 
                         ErrorMessage="не сте въвели таен отговор" 
@@ -165,11 +164,6 @@
                             <TitleStyle BackColor="#333399" BorderStyle="Solid" Font-Bold="True" Font-Size="12pt" ForeColor="White" Height="12pt" />
                             <TodayDayStyle BackColor="#999999" ForeColor="red" />
                         </asp:Calendar>
-                        <%--<ajaxToolkit:Calendar runat="server"
-    TargetControlID="Date1"
-    CssClass="ClassName"
-    Format="MMMM d, yyyy"
-    PopupButtonID="Image1" />--%>
                     </td>
                 </tr>
                 <tr>

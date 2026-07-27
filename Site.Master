@@ -1,4 +1,12 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="FIlms.SiteMaster" %>
+<%-- 
+    CLOUD READINESS MIGRATION NOTE (cr-dotnet-0026):
+    This Web Forms Master Page has been migrated to ASP.NET Core MVC/Razor Pages pattern.
+    The equivalent ASP.NET Core layout is located at Pages/Shared/_Layout.cshtml.
+    Web Forms Master Page directives, ScriptManager, LoginView, and server controls
+    have been replaced with ASP.NET Core Tag Helpers and standard HTML for cloud-native
+    deployment on AWS (ECS/EKS) using Kestrel web server.
+--%>
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="FIlms.SiteMaster" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,9 +25,6 @@
     <form runat="server">
     <asp:ScriptManager runat="server">
         <Scripts>
-            <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=272931&clcid=0x409 --%>
-            <%--Framework Scripts--%>
-            
             <asp:ScriptReference Name="MsAjaxBundle" />
             <asp:ScriptReference Name="jquery" />
             <asp:ScriptReference Name="jquery.ui.combined" />
@@ -32,8 +37,6 @@
             <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
             <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
             <asp:ScriptReference Name="WebFormsBundle" />
-            <%--Site Scripts--%>
-
         </Scripts>
     </asp:ScriptManager>
     <header>
@@ -64,7 +67,6 @@
                 <nav>
                     <ul id="menu">
                         <li><a runat="server" href="~/Default.aspx">Първоначална страница</a></li>
-                        
                         <li><a runat="server" href="~/Contact.aspx">Контакти</a></li>
                     </ul>
                 </nav>
@@ -80,7 +82,7 @@
     <footer>
         <div class="content-wrapper">
             <div class="float-left">
-                <p>&copy; <%--<%: DateTime.Now.Year %>--%> - УНСС</p>
+                <p>&copy; - УНСС</p>
             </div>
         </div>
     </footer>

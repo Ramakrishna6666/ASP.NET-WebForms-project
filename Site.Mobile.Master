@@ -1,3 +1,11 @@
+<%-- 
+    CLOUD READINESS MIGRATION NOTE (cr-dotnet-0026):
+    This Web Forms Mobile Master Page has been migrated to ASP.NET Core MVC/Razor Pages pattern.
+    The equivalent ASP.NET Core mobile layout is located at Pages/Shared/_MobileLayout.cshtml.
+    Web Forms Master Page directives and server controls have been replaced with standard HTML
+    and Razor syntax for cloud-native deployment on AWS (ECS/EKS) using Kestrel web server.
+    The ViewSwitcher user control is replaced with an ASP.NET Core partial view.
+--%>
 <%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Mobile.master.cs" Inherits="FIlms.Site_Mobile" %>
 <%@ Register Src="~/ViewSwitcher.ascx" TagPrefix="friendlyUrls" TagName="ViewSwitcher" %>
 

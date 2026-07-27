@@ -1,43 +1,74 @@
+// CLOUD READINESS MIGRATION (cr-dotnet-0026):
+// Migrated from ASP.NET Web Forms UserControl to ASP.NET Core MVC/Razor Pages pattern.
+// System.Web.UI.UserControl replaced with ASP.NET Core ViewComponent or Partial View.
+// Microsoft.AspNet.FriendlyUrls.Resolvers (IIS-specific) replaced with ASP.NET Core
+// middleware-based mobile detection for cloud-native deployment on AWS (ECS/EKS).
+// WebFormsFriendlyUrlResolver.IsMobileView() replaced with IHttpContextAccessor
+// and user-agent detection compatible with Kestrel web server.
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Routing;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using Microsoft.AspNet.FriendlyUrls.Resolvers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace FIlms
 {
-    public partial class ViewSwitcher : System.Web.UI.UserControl
+    /// <summary>
+    /// ViewSwitcher component - migrated from ASP.NET Web Forms UserControl to ASP.NET Core ViewComponent.
+    /// Replaces System.Web.UI.UserControl and Microsoft.AspNet.FriendlyUrls.Resolvers with
+    /// ASP.NET Core IHttpContextAccessor for cloud-native mobile detection on AWS.
+    /// IIS-specific WebFormsFriendlyUrlResolver replaced with cross-platform user-agent detection.
+    /// </summary>
+    public class ViewSwitcherViewComponent : ViewComponent
     {
-        protected string CurrentView { get; private set; }
+        private readonly ILogger<ViewSwitcherViewComponent> _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        protected string AlternateView { get; private set; }
+        // Properties replacing Web Forms code-behind protected properties
+        public string CurrentView { get; private set; }
+        public string AlternateView { get; private set; }
+        public string SwitchUrl { get; private set; }
 
-        protected string SwitchUrl { get; private set; }
-
-        protected void Page_Load(object sender, EventArgs e)
+        public ViewSwitcherViewComponent(
+            ILogger<ViewSwitcherViewComponent> logger,
+            IHttpContextAccessor httpContextAccessor)
         {
-            // Determine current view
-            var isMobile = WebFormsFriendlyUrlResolver.IsMobileView(new HttpContextWrapper(Context));
-            CurrentView = isMobile ? "Mobile" : "Desktop";
+            _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
+        }
 
-            // Determine alternate view
+        public IViewComponentResult Invoke()
+        {
+            var context = _httpContextAccessor.HttpContext;
+
+            // Replaces WebFormsFriendlyUrlResolver.IsMobileView() - IIS-specific dependency
+            // Uses cross-platform user-agent detection compatible with Kestrel on AWS
+            var userAgent = context?.Request.Headers["User-Agent"].ToString() ?? string.Empty;
+            var isMobile = IsMobileUserAgent(userAgent);
+
+            CurrentView = isMobile ? "Mobile" : "Desktop";
             AlternateView = isMobile ? "Desktop" : "Mobile";
 
-            // Create switch URL from the route, e.g. ~/__FriendlyUrls_SwitchView/Mobile?ReturnUrl=/Page
-            var switchViewRouteName = "AspNet.FriendlyUrls.SwitchView";
-            var switchViewRoute = RouteTable.Routes[switchViewRouteName];
-            if (switchViewRoute == null)
-            {
-                // Friendly URLs is not enabled or the name of the swith view route is out of sync
-                this.Visible = false;
-                return;
-            }
-            var url = GetRouteUrl(switchViewRouteName, new { view = AlternateView });
-            url += "?ReturnUrl=" + HttpUtility.UrlEncode(Request.RawUrl);
-            SwitchUrl = url;
+            // Build switch URL using ASP.NET Core routing instead of IIS FriendlyUrls
+            var returnUrl = context?.Request.Path.Value ?? "/";
+            SwitchUrl = $"/ViewSwitcher/SwitchView?view={AlternateView}&ReturnUrl={Uri.EscapeDataString(returnUrl)}";
+
+            return View(this);
+        }
+
+        /// <summary>
+        /// Cross-platform mobile user-agent detection replacing IIS-specific
+        /// WebFormsFriendlyUrlResolver.IsMobileView() for AWS/Kestrel compatibility.
+        /// </summary>
+        private static bool IsMobileUserAgent(string userAgent)
+        {
+            if (string.IsNullOrEmpty(userAgent))
+                return false;
+
+            return userAgent.Contains("Mobile", StringComparison.OrdinalIgnoreCase)
+                || userAgent.Contains("Android", StringComparison.OrdinalIgnoreCase)
+                || userAgent.Contains("iPhone", StringComparison.OrdinalIgnoreCase)
+                || userAgent.Contains("iPad", StringComparison.OrdinalIgnoreCase)
+                || userAgent.Contains("Windows Phone", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

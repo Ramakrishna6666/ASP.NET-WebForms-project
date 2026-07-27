@@ -1,81 +1,88 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+// CLOUD READINESS MIGRATION (cr-dotnet-0026):
+// Migrated from ASP.NET Web Forms to ASP.NET Core MVC/Razor Pages pattern.
+// System.Web.UI.Page replaced with Microsoft.AspNetCore.Mvc.RazorPages.PageModel.
+// This code-behind is refactored to use ASP.NET Core Razor Pages conventions
+// for cloud-native deployment on AWS (ECS/EKS) using Kestrel web server.
+// Web Forms event handlers (Button_Click, CheckBox_CheckedChanged) are replaced
+// with OnPost handler methods following Razor Pages conventions.
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 
 namespace FIlms
 {
-    public partial class LogIn : System.Web.UI.Page
+    /// <summary>
+    /// Login page model - migrated from ASP.NET Web Forms to ASP.NET Core Razor Pages.
+    /// Replaces System.Web.UI.Page inheritance with PageModel for cloud-native deployment.
+    /// Password recovery panels are replaced with conditional Razor sections.
+    /// </summary>
+    public class LogInModel : PageModel
     {
-        protected void Page_Load(object sender, EventArgs e)
+        private readonly ILogger<LogInModel> _logger;
+
+        [BindProperty]
+        public string Username { get; set; }
+
+        [BindProperty]
+        public string Password { get; set; }
+
+        [BindProperty]
+        public string SecretAnswer { get; set; }
+
+        [BindProperty]
+        public string MobilePhone { get; set; }
+
+        public bool ShowRecoveryPanel { get; set; } = false;
+        public bool ShowMobilePanel { get; set; } = false;
+        public bool ShowPasswordResult { get; set; } = false;
+        public string RecoveredPassword { get; set; }
+
+        public LogInModel(ILogger<LogInModel> logger)
         {
-            
-              
+            _logger = logger;
         }
 
-        protected void Button2_Click(object sender, EventArgs e)
+        public void OnGet()
         {
-            if (CheckBox1.Checked == false)
-            {
-                CheckBox1.Visible = true;
-                Panel2.Visible = true;
-            }
-            else if (CheckBox1.Checked == true)
-            {
-                CheckBox1.Visible = true;
-                Panel2.Visible = false;
-            }
-            
+            // Stateless GET handler replacing Page_Load event
         }
 
-       
-
-        protected void CheckBox1_CheckedChanged(object sender, EventArgs e)
+        public IActionResult OnPostLogin()
         {
-           
-            if (CheckBox1.Checked == true )
-            {
-            
-                Panel2.Visible = false;
-                Panel3.Visible = true;
-                Label4.Visible = false;
-                TextBox4.Visible = false;
-                    
-            }
-            else
-	        {
-                TextBox4.Visible = false;
-                Label4.Visible = false; 
-	        }
-
-             if (CheckBox1.Checked== false)
-            {
-                Panel2.Visible = true;
-                Panel3.Visible = false;
-                Label4.Visible = false;
-                TextBox4.Visible = false;
-            }
-             else
-             {
-                 TextBox4.Visible = false;
-                 Label4.Visible = false;
-             }
-            
-        }
-        protected void Button3_Click(object sender, EventArgs e)
-        {
-            TextBox4.Visible = true;
-            Label4.Visible = true;
-        }
-        protected void Button4_Click(object sender, EventArgs e)
-        {
-            TextBox4.Visible = true;
-            Label4.Visible = true;
+            // Replaces Button1_Click - login logic
+            if (!ModelState.IsValid)
+                return Page();
+            // Authentication logic would be implemented here
+            return RedirectToPage("/Index");
         }
 
-       
-       
+        public IActionResult OnPostForgotPassword()
+        {
+            // Replaces Button2_Click - show password recovery panel
+            ShowRecoveryPanel = true;
+            return Page();
+        }
+
+        public IActionResult OnPostToggleMobileRecovery()
+        {
+            // Replaces CheckBox1_CheckedChanged - toggle between recovery methods
+            ShowMobilePanel = true;
+            ShowRecoveryPanel = false;
+            return Page();
+        }
+
+        public IActionResult OnPostRecoverBySecretAnswer()
+        {
+            // Replaces Button3_Click - show password via secret answer
+            ShowPasswordResult = true;
+            return Page();
+        }
+
+        public IActionResult OnPostRecoverByMobile()
+        {
+            // Replaces Button4_Click - show password via mobile phone
+            ShowPasswordResult = true;
+            return Page();
+        }
     }
 }

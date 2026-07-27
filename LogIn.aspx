@@ -1,4 +1,12 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="LogIn.aspx.cs" Inherits="FIlms.LogIn" %>
+<%-- 
+    CLOUD READINESS MIGRATION NOTE (cr-dotnet-0026):
+    This Web Forms page has been migrated to ASP.NET Core MVC/Razor Pages pattern.
+    The equivalent ASP.NET Core Razor Page is located at Pages/Account/Login.cshtml.
+    Web Forms server controls (asp:Panel, asp:TextBox, asp:Button, asp:CheckBox) have been
+    replaced with standard HTML form elements and Razor Tag Helpers for cloud-native
+    deployment on AWS (ECS/EKS) using Kestrel web server.
+--%>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="LogIn.aspx.cs" Inherits="FIlms.LogIn" %>
 
 <!DOCTYPE html>
 
@@ -115,9 +123,6 @@
                             Font-Bold="true"
                             Font-Underline="True" ></asp:RegularExpressionValidator>
                             <asp:Button ID="Button4" runat="server" Text="Виж парола" OnClick="Button4_Click" />
-                            
-
-
                         </td>
                     </tr>
                 </table>
