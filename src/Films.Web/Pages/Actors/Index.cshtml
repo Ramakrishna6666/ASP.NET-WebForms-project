@@ -1,0 +1,48 @@
+@page
+@model Films.Web.Pages.Actors.IndexModel
+@{
+    ViewData["Title"] = "Actors";
+}
+
+<h1>Actors</h1>
+
+<p>
+    <a asp-page="Create" class="btn btn-primary">Create New</a>
+</p>
+
+@if (Model.Actors != null && Model.Actors.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Birth Date</th>
+                <th>Sex</th>
+                <th>Nationality</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var actor in Model.Actors)
+            {
+                <tr>
+                    <td>@actor.FirstName</td>
+                    <td>@actor.LastName</td>
+                    <td>@(actor.BirthDate?.ToString("yyyy-MM-dd") ?? "N/A")</td>
+                    <td>@actor.SexName</td>
+                    <td>@actor.Nationality</td>
+                    <td>
+                        <a asp-page="Details" asp-route-id="@actor.Id" class="btn btn-sm btn-info">Details</a>
+                        <a asp-page="Edit" asp-route-id="@actor.Id" class="btn btn-sm btn-warning">Edit</a>
+                        <a asp-page="Delete" asp-route-id="@actor.Id" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No actors found.</p>
+}

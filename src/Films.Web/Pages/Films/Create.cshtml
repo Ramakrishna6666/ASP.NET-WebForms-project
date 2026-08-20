@@ -1,0 +1,53 @@
+@page
+@model Films.Web.Pages.Films.CreateModel
+@{
+    ViewData["Title"] = "Create Film";
+}
+
+<h1>Create Film</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div class="mb-3">
+                <label asp-for="Input.Title" class="form-label"></label>
+                <input asp-for="Input.Title" class="form-control" />
+                <span asp-validation-for="Input.Title" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.Description" class="form-label"></label>
+                <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Input.Description" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.Year" class="form-label"></label>
+                <input asp-for="Input.Year" class="form-control" type="number" />
+                <span asp-validation-for="Input.Year" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.Genre" class="form-label"></label>
+                <input asp-for="Input.Genre" class="form-control" />
+                <span asp-validation-for="Input.Genre" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.Duration" class="form-label"></label>
+                <input asp-for="Input.Duration" class="form-control" type="number" />
+                <span asp-validation-for="Input.Duration" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.Country" class="form-label"></label>
+                <input asp-for="Input.Country" class="form-control" />
+                <span asp-validation-for="Input.Country" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a asp-page="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
